@@ -1,0 +1,160 @@
+<title>Termómetro RLH 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Work+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ink:#16241C; --ink-soft:#4B5E52; --bg:#F6F3EC; --surface:#FFFFFF;
+    --accent:#1E7A54; --accent-strong:#145C3F; --accent-soft:#DCEEE3;
+    --ember:#E2652B; --ember-soft:#FBE4D6; --track:#E6E0D2; --line:#E2DDD0;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#ECE8DC; --ink-soft:#B7C0B4; --bg:#101914; --surface:#17231C;
+      --accent:#3FBE8C; --accent-strong:#59D6A3; --accent-soft:#1D3327;
+      --ember:#FF8B52; --ember-soft:#3A2318; --track:#233227; --line:#26362C;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#ECE8DC; --ink-soft:#B7C0B4; --bg:#101914; --surface:#17231C;
+    --accent:#3FBE8C; --accent-strong:#59D6A3; --accent-soft:#1D3327;
+    --ember:#FF8B52; --ember-soft:#3A2318; --track:#233227; --line:#26362C;
+  }
+  *{box-sizing:border-box;}
+  body{ background:var(--bg); color:var(--ink); font-family:'Work Sans',ui-sans-serif,system-ui,sans-serif; display:flex; justify-content:center; padding:48px 20px; }
+  .sheet{ width:100%; max-width:720px; display:flex; flex-direction:column; gap:28px; }
+  .eyebrow-row{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .eyebrow{ font-family:'Oswald',ui-sans-serif,sans-serif; font-weight:600; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent-strong); }
+  .eyebrow span{ color:var(--ink-soft); font-weight:400; letter-spacing:.06em; }
+  .updated{ font-size:12px; color:var(--ink-soft); background:var(--surface); border:1px solid var(--line); border-radius:999px; padding:5px 12px; white-space:nowrap; }
+  .hero-card{ background:var(--surface); border:1px solid var(--line); border-radius:20px; padding:36px 40px 32px; display:flex; flex-direction:column; gap:22px; }
+  .hero-figure{ display:flex; align-items:flex-end; gap:14px; flex-wrap:wrap; }
+  .hero-number{ font-family:'Oswald',ui-sans-serif,sans-serif; font-weight:700; font-size:clamp(52px,9vw,76px); line-height:.95; font-variant-numeric:tabular-nums; letter-spacing:-.01em; }
+  .hero-caption{ font-size:15px; color:var(--ink-soft); padding-bottom:8px; }
+  .hero-caption strong{ color:var(--ink); font-weight:600; }
+  .track-wrap{ display:flex; flex-direction:column; gap:8px; }
+  .track{ position:relative; height:14px; border-radius:999px; background:var(--track); overflow:visible; }
+  .track-fill{ position:absolute; inset:0 auto 0 0; border-radius:999px; background:linear-gradient(90deg,var(--accent-strong),var(--accent)); }
+  .track-marker{ position:absolute; top:50%; width:26px; height:26px; transform:translate(-50%,-50%); display:flex; align-items:center; justify-content:center; background:var(--surface); border:2px solid var(--accent-strong); border-radius:999px; font-size:13px; }
+  .track-scale{ display:flex; justify-content:space-between; font-size:11px; color:var(--ink-soft); font-variant-numeric:tabular-nums; }
+  .stat-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:16px; overflow:hidden; }
+  .stat{ background:var(--surface); padding:20px 22px; display:flex; flex-direction:column; gap:6px; }
+  .stat-label{ font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); }
+  .stat-value{ font-family:'Oswald',ui-sans-serif,sans-serif; font-weight:600; font-size:26px; font-variant-numeric:tabular-nums; }
+  .stat-value.warn{ color:var(--ember); }
+  .stat-sub{ font-size:12.5px; color:var(--ink-soft); }
+  .race-card{ background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:22px 24px; display:flex; flex-direction:column; gap:14px; }
+  .race-title{ font-family:'Oswald',ui-sans-serif,sans-serif; font-weight:600; font-size:14px; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-soft); }
+  .race-rows{ display:flex; flex-direction:column; gap:10px; }
+  .race-row{ display:grid; grid-template-columns:104px 1fr auto; align-items:center; gap:12px; }
+  .race-name{ font-size:13px; color:var(--ink); }
+  .race-track{ height:10px; border-radius:999px; background:var(--track); overflow:hidden; }
+  .race-fill{ height:100%; border-radius:999px; background:linear-gradient(90deg,var(--accent-strong),var(--accent)); }
+  .race-num{ font-size:12.5px; color:var(--ink-soft); font-variant-numeric:tabular-nums; text-align:right; white-space:nowrap; }
+  .race-num strong{ color:var(--ink); font-weight:600; }
+  .sponsor-card{ background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:22px 24px; display:flex; flex-direction:column; gap:10px; }
+  .sponsor-title{ font-family:'Oswald',ui-sans-serif,sans-serif; font-weight:600; font-size:14px; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-soft); }
+  .sponsor-row{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
+  .sponsor-name{ font-size:13px; color:var(--ink); }
+  .sponsor-num{ font-family:'Oswald',ui-sans-serif,sans-serif; font-size:18px; font-variant-numeric:tabular-nums; color:var(--accent-strong); }
+  .sponsor-note{ font-size:12.5px; color:var(--ink-soft); }
+  .hero-breakdown{ font-size:13px; color:var(--ink-soft); }
+  .hero-breakdown strong{ color:var(--ink); font-weight:600; }
+  .pace-card{ background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:22px 24px; display:flex; flex-direction:column; gap:14px; }
+  .pace-title{ font-family:'Oswald',ui-sans-serif,sans-serif; font-weight:600; font-size:14px; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-soft); }
+  .pace-bars{ display:flex; flex-direction:column; gap:12px; }
+  .pace-row{ display:grid; grid-template-columns:100px 1fr 90px; align-items:center; gap:12px; }
+  .pace-name{ font-size:13px; color:var(--ink-soft); }
+  .pace-track{ height:10px; border-radius:999px; background:var(--track); overflow:hidden; }
+  .pace-fill{ height:100%; border-radius:999px; }
+  .pace-fill.actual{ background:var(--accent); }
+  .pace-fill.needed{ background:var(--ember); }
+  .pace-num{ font-family:'Oswald',ui-sans-serif,sans-serif; font-size:14px; font-variant-numeric:tabular-nums; text-align:right; }
+  .pace-note{ font-size:12.5px; color:var(--ink-soft); text-wrap:balance; }
+  .pace-note strong{ color:var(--ember); font-weight:600; }
+  footer{ display:flex; flex-direction:column; gap:4px; font-size:12px; color:var(--ink-soft); border-top:1px solid var(--line); padding-top:16px; }
+  footer b{ color:var(--ink); font-weight:600; }
+</style>
+<div class="sheet">
+  <div class="eyebrow-row">
+    <div class="eyebrow">Run Like a Hero 2026 <span>· Asociación Síndrome Phelan-McDermid</span></div>
+    <div class="updated">Actualizado 22/09/2026 · 13:33</div>
+  </div>
+  <div class="hero-card">
+    <div class="hero-figure">
+      <div class="hero-number">5.790&nbsp;€</div>
+      <div class="hero-caption">recaudados de <strong>25.000&nbsp;€</strong> objetivo</div>
+    </div>
+    <div class="hero-breakdown">Compras web: <strong>3.290&nbsp;€</strong> · Patrocinadores: <strong>2.500&nbsp;€</strong></div>
+    <div class="track-wrap">
+      <div class="track">
+        <div class="track-fill" style="width:23.2%"></div>
+        <div class="track-marker" style="left:23.2%">🏃</div>
+      </div>
+      <div class="track-scale"><span>0 €</span><span>12.500 €</span><span>25.000 €</span></div>
+    </div>
+  </div>
+  <div class="stat-grid">
+    <div class="stat"><div class="stat-label">% del objetivo</div><div class="stat-value">23,2%</div><div class="stat-sub">5.790 € de 25.000 €</div></div>
+    <div class="stat"><div class="stat-label">Dorsales vendidos</div><div class="stat-value">428</div><div class="stat-sub">desde el 7 de agosto</div></div>
+    <div class="stat"><div class="stat-label">Días hasta el cierre</div><div class="stat-value warn">34</div><div class="stat-sub">meta: 26 de octubre de 2026</div></div>
+    <div class="stat"><div class="stat-label">Falta por recaudar</div><div class="stat-value">19.210&nbsp;€</div><div class="stat-sub">76,8% del objetivo</div></div>
+  </div>
+  <div class="race-card">
+    <div class="race-title">Por carrera</div>
+    <div class="race-rows">
+      <div class="race-row">
+        <div class="race-name">Barcelona</div>
+        <div class="race-track"><div class="race-fill" style="width:100%"></div></div>
+        <div class="race-num"><strong>132</strong> tickets · 1.165,00 €</div>
+      </div>
+      <div class="race-row">
+        <div class="race-name">Ortuella</div>
+        <div class="race-track"><div class="race-fill" style="width:69.1%"></div></div>
+        <div class="race-num"><strong>96</strong> tickets · 805,00 €</div>
+      </div>
+      <div class="race-row">
+        <div class="race-name">Global Running Week</div>
+        <div class="race-track"><div class="race-fill" style="width:36.5%"></div></div>
+        <div class="race-num"><strong>85</strong> tickets · 425,00 €</div>
+      </div>
+      <div class="race-row">
+        <div class="race-name">Herencia</div>
+        <div class="race-track"><div class="race-fill" style="width:32.6%"></div></div>
+        <div class="race-num"><strong>38</strong> tickets · 380,00 €</div>
+      </div>
+      <div class="race-row">
+        <div class="race-name">Pamplona</div>
+        <div class="race-track"><div class="race-fill" style="width:29.2%"></div></div>
+        <div class="race-num"><strong>51</strong> tickets · 340,00 €</div>
+      </div>
+      <div class="race-row">
+        <div class="race-name">Madrid</div>
+        <div class="race-track"><div class="race-fill" style="width:15%"></div></div>
+        <div class="race-num"><strong>26</strong> tickets · 175,00 €</div>
+      </div>
+    </div>
+  </div>
+  <div class="sponsor-card">
+    <div class="sponsor-title">Patrocinadores</div>
+    <div class="sponsor-row">
+      <div class="sponsor-name">Aportación directa (fuera de la web)</div>
+      <div class="sponsor-num">2.500&nbsp;€</div>
+    </div>
+    <div class="sponsor-note">Se suma al total del objetivo, pero no proviene de venta de dorsales ni cuenta en el desglose por carrera.</div>
+  </div>
+  <div class="pace-card">
+    <div class="pace-title">Ritmo de recaudación</div>
+    <div class="pace-bars">
+      <div class="pace-row"><div class="pace-name">Ritmo actual</div><div class="pace-track"><div class="pace-fill actual" style="width:22.3%"></div></div><div class="pace-num">125,9 €/día</div></div>
+      <div class="pace-row"><div class="pace-name">Ritmo necesario</div><div class="pace-track"><div class="pace-fill needed" style="width:100%"></div></div><div class="pace-num">565,0 €/día</div></div>
+    </div>
+    <div class="pace-note">Al ritmo actual (46 días, 5.790 €) faltarían más de <strong>5,1 meses</strong> para llegar a 25.000 €. Para cerrar el objetivo el 26 de octubre hace falta multiplicar el ritmo diario <strong>por 4</strong> a partir de ahora.</div>
+  </div>
+  <footer>
+    <div><b>Periodo contabilizado:</b> todos los pagos confirmados de la edición 2026 (el primero, 07/08/2026).</div>
+    <div><b>Solo cuenta:</b> Ortuella, Barcelona, Global Running Week, Pamplona, Madrid y Herencia (ediciones 2026).</div>
+    <div><b>Fuente:</b> WooCommerce de runlikeahero.com, vía <code>scripts/informe_rlh.py</code>.</div>
+    <div><b>Patrocinadores:</b> dato manual, actualizado a mano cuando Paz confirma una cifra nueva (no viene de la web).</div>
+  </footer>
+</div>
